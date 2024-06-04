@@ -1,0 +1,482 @@
+<%-- 
+    Document   : Home
+    Created on : May 28, 2024, 12:58:34 PM
+    Author     : LENOVO
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%><!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Cyborg - Awesome HTML5 Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-cyborg-gaming.css">
+    <link rel="stylesheet" href="assets/css/owl.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="assets/css/Style.css">
+<!--
+
+TemplateMo 579 Cyborg Gaming
+
+https://templatemo.com/tm-579-cyborg-gaming
+
+-->
+  </head>
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="Home.jsp" class="logo">
+                        <img src="assets/images/logo.png" alt="">
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Search End ***** -->
+                    <div class="search-input">
+                      <form id="search" action="#">
+                        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
+                        <i class="fa fa-search"></i>
+                      </form>
+                    </div>
+                    <!-- ***** Search End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="Home.jsp" class="active">Home</a></li>
+                        <li><a href="browse.html">Browse</a></li>
+                        <li><a href="details.html">Details</a></li>
+                        <li><a href="streams.html">Streams</a></li>
+                        <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
+                    </ul>   
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="page-content">
+
+          <!-- ***** Banner Start ***** -->
+          <div class="main-banner">
+            <div class="row">
+              <div class="col-lg-7">
+                <div class="header-text">
+                  <h6>Welcome To FPTeam</h6>
+                  <h4><em>Welcome</em>  to the  best trading platform to for gamer</h4>
+                  <div class="main-button">
+                    <a href="browse.html">About us </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ***** Banner End ***** -->
+
+          <!-- ***** Most Popular Start ***** -->
+          <div class="most-popular">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="heading-section">
+                  <h4><em>Most Popular</em> Right Now</h4>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/68753.jpg" alt="">
+                      <h4>Fortnite<br><span>Sandbox</span></h4>
+                      <ul>
+                        <li><i class="fa fa-star"></i> 4.8</li>
+                        <li><i class="fa fa-download"></i> 2.3M</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/24252.jpg" alt="">
+                      <h4>PubG<br><span>Battle S</span></h4>
+                      <ul>
+                        <li><i class="fa fa-star"></i> 4.8</li>
+                        <li><i class="fa fa-download"></i> 2.3M</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/46492.jpg" alt="">
+                      <h4>Dota2<br><span>Steam-X</span></h4>
+                      <ul>
+                        <li><i class="fa fa-star"></i> 4.8</li>
+                        <li><i class="fa fa-download"></i> 2.3M</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/46806.jpg" alt="">
+                      <h4>CS-GO<br><span>Legendary</span></h4>
+                      <ul>
+                        <li><i class="fa fa-star"></i> 4.8</li>
+                        <li><i class="fa fa-download"></i> 2.3M</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="item">
+                      <div class="row">
+                        <div class="col-lg-6 col-sm-6">
+                          <div class="item inner-item">
+                            <img src="assets/images/48041.jpg" alt="">
+                            <h4>Mini Craft<br><span>Legendary</span></h4>
+                            <ul>
+                              <li><i class="fa fa-star"></i> 4.8</li>
+                              <li><i class="fa fa-download"></i> 2.3M</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6">
+                          <div class="item">
+                            <img src="assets/images/49977.jpg" alt="">
+                            <h4>Eagles Fly<br><span>Matrix Games</span></h4>
+                            <ul>
+                              <li><i class="fa fa-star"></i> 4.8</li>
+                              <li><i class="fa fa-download"></i> 2.3M</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/56794.jpg" alt="">
+                      <h4>Warface<br><span>Max 3D</span></h4>
+                      <ul>
+                        <li><i class="fa fa-star"></i> 4.8</li>
+                        <li><i class="fa fa-download"></i> 2.3M</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/68753.jpg" alt="">
+                      <h4>Warcraft<br><span>Legend</span></h4>
+                      <ul>
+                        <li><i class="fa fa-star"></i> 4.8</li>
+                        <li><i class="fa fa-download"></i> 2.3M</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="main-button">
+                      <a href="browse.html">Discover Popular</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ***** Most Popular End ***** -->
+          
+          
+          
+          
+   
+
+          <!-- ***** Genres Start ***** -->
+          <div class="most-popular">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="heading-section">
+                  <h4><em>Genres</em> </h4>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/68753.jpg" alt="">
+                      <h4>Anime<br></h4>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/top10fighting-1660091625986.jpg" alt="">
+                      <h4>Action<br></h4>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/640px-2012-10-20-152616_800x597_scrot.png" alt="">
+                      <h4>Adventure<br></h4>
+                    </div>
+                  </div>
+                 <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <img src="assets/images/Ace-Attorney.webp" alt="">
+                      <h4>Detective<br></h4>
+                    </div>
+                  </div>
+           
+                 
+              
+                  <div class="col-lg-12">
+                    <div class="main-button">
+                      <a href="browse.html">Discover Popular</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ***** Genres End ***** -->
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+            <!-- ***** Explore Area Starts ***** -->
+    <section class="section" id="explore">
+        <div class=" gaming-library container ">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="left-content">
+                        <h2>MIHOYO </h2>
+                        <span>You are allowed to use this HexaShop HTML CSS template. You can feel free to modify or edit this layout. You can convert this template as any kind of ecommerce CMS theme as you wish.</span>
+                        <div class="quote">
+                            <i class="fa fa-quote-left"></i><p>You are not allowed to redistribute this template ZIP file on any other website.</p>
+                        </div>
+                        <p>There are 5 pages included in this HexaShop Template and we are providing it to you for absolutely free of charge at our TemplateMo website. There are web development costs for us.</p>
+                            <p>If this template is beneficial for your website or business, please kindly <a rel="nofollow" href="https://paypal.me/templatemo" target="_blank">support us</a> a little via PayPal. Please also tell your friends about our great website. Thank you.</p>
+                        <div class="main-border-button">
+                            <a href="products.html">Discover More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="right-content">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="leather">
+                                    <h4>Honkai Impact 3</h4>
+                                    <span>2017</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="first-image">
+                                    <img src="assets/images/Honkai_Impact_3rd_logo.png" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="second-image">
+                                    <img src="assets/images/Genshin_Impact_cover.jpg" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="types">
+                                    <h4>Genshin </h4>
+                                    <span>2018</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Explore Area Ends ***** -->
+
+    
+    
+       <!-- ***** Social Area Starts ***** -->
+    <section class="section" id="social">
+        <div class="container  ">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Social Media</h2>
+                        <span>Details to details is what makes Hexashop different from the other themes.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" gaming-library container">
+            <div class=" row images ">
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="https://www.facebook.com/">
+                                <h6>FaceBook</h6>
+                            </a>
+                        </div>
+                        <img src="assets/images/Facebook_Logo_(2019).png" alt="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="http://x.com">
+                                <h6>Twitter</h6>
+                            </a>
+                        </div>
+                        <img src="assets/images/x-social-media-logo-icon.png" alt="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="http://instagram.com">
+                                <h6>Youtube</h6>
+                            </a>
+                        </div>
+                        <img src="assets/images/vecteezy_youtube-icon-vector_11998173.jpg" alt="">
+                    </div>
+                </div>
+                
+              
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="http://instagram.com">
+                                <h6>instagram</h6>
+                            </a>
+                        </div>
+                        <img src="assets/images/Instagram_icon.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Social Area Ends ***** -->
+    
+    
+    
+    
+    
+    
+    
+    
+     <!-- ***** Gaming Library Start ***** -->
+          <div class="gaming-library profile-library">
+            <div class="col-md-12">
+              <div class="heading-section">
+                <h4><em>Transaction History</em> </h4>
+              </div>
+              <div class="item">
+                <ul>
+              
+                  <li><h4>MB bank</h4></li>
+                   <li><h4>Content</h4><span>ID:123</span></li>
+                  <li><h4>Date Added</h4><span>24/08/2036</span></li>
+                   <li><div class="main-border-button border-no-active"><a href="#">120.000</a></div></li>
+                </ul>
+              </div>
+              <div class="item">
+                <ul>
+                  <li><h4>MB bank</h4></li>
+                  
+                   <li><h4>Content</h4><span>ID:123</span></li>
+                  <li><h4>Date Added</h4><span>22/06/2036</span></li>
+                  <li><div class="main-border-button border-no-active"><a href="#">200.000</a></div></li>
+                </ul>
+              </div>
+              <div class="item last-item">
+                <ul>
+                  <li><h4>MB bank</h4></li>
+                  
+                   <li><h4>Content</h4><span>ID:123</span></li>
+                  <li><h4>Date Added</h4><span>21/04/2022</span></li>
+                <li><div class="main-border-button border-no-active"><a href="#">120.000</a></div></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- ***** Gaming Library End ***** -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright © 2036 <a href="#">Cyborg Gaming</a> Company. All rights reserved. 
+          
+          <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+   <!-- jQuery -->
+        <script src="assets/js/jquery-2.1.0.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="assets/js/popper.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- Plugins -->
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/accordions.js"></script>
+        <script src="assets/js/datepicker.js"></script>
+        <script src="assets/js/scrollreveal.min.js"></script>
+        <script src="assets/js/waypoints.min.js"></script>
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <script src="assets/js/imgfix.min.js"></script>
+        <script src="assets/js/slick.js"></script>
+        <script src="assets/js/lightbox.js"></script>
+        <script src="assets/js/isotope.js"></script>
+
+        <!-- Global Init -->
+        <script src="assets/js/custom.js"></script>
+
+  </body>
+
+</html>
+
