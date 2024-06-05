@@ -7,18 +7,20 @@ public class Gamers {
     private String Email;
     private String Password;
     private int Money;
+    private String AvatarLink;
 
     // Default constructor
     public Gamers() {
     }
 
     // Parameterized constructor
-    public Gamers(String ID, String Name, String Email, String Password, int Money) {
+    public Gamers(String ID, String Name, String Email, String Password, int Money, String AvatarLink) {
         this.ID = ID;
         this.Name = Name;
         this.Email = Email;
         this.Password = Password;
         this.Money = Money;
+        this.AvatarLink = AvatarLink;
     }
 
     public String getID() {
@@ -61,6 +63,14 @@ public class Gamers {
         this.Money = Money;
     }
 
+    public String getAvatarLink() {
+        return AvatarLink;
+    }
+
+    public void setAvatarLink(String AvatarLink) {
+        this.AvatarLink = AvatarLink;
+    }
+
     @Override
     public String toString() {
         return "Gamer{" +
@@ -69,6 +79,7 @@ public class Gamers {
                 ", Email='" + Email + '\'' +
                 ", Password='" + Password + '\'' +
                 ", Money=" + Money +
+                ", AvatarLink='" + AvatarLink + '\'' +
                 '}';
     }
 }

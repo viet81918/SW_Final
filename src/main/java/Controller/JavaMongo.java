@@ -27,9 +27,7 @@ public class JavaMongo {
             System.out.println(gamer);
         }
     }
-     
-     
-     
+    
      public static MongoClientSettings getConnection(){
            ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
@@ -48,28 +46,29 @@ public class JavaMongo {
 
         ArrayList<Gamers> gamersList = new ArrayList<>();
 
-        try (MongoClient mongoClient = MongoClients.create(settings)) {
+          try (MongoClient mongoClient = MongoClients.create(settings)) {
             try {
                 // Access the "FPTeam" database
                 MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
 
                 // Access the "Gamers" collection
                 MongoCollection<Document> gamersCollection = fpteamDB.getCollection("Gamers");
+                MongoCursor<Document> cursor = gamersCollection.find().iterator();
+
                 // Query the collection and iterate over the cursor to print each document
-                try (MongoCursor<Document> cursor = gamersCollection.find().iterator()) {
-                    // Query the collection and iterate over the cursor to print each document
-                    while (cursor.hasNext()) {
-                        Document doc = cursor.next();
-                        Gamers gamers = new Gamers(
-                                doc.getString("ID"),
-                                doc.getString("Name"),
-                                doc.getString("Email"),
-                                doc.getString("Password"),
-                                doc.getInteger("Money", 0)
-                        );
-                        gamersList.add(gamers);
-                    }
+                while (cursor.hasNext()) {
+                    Document doc = cursor.next();
+                    Gamers gamers = new Gamers(
+                            doc.getString("ID"),
+                            doc.getString("Name"),
+                            doc.getString("Email"),
+                            doc.getString("Password"),
+                            doc.getInteger("Money", 0),
+                            doc.getString("AvatarLink")  // Get AvatarLink from the document
+                    );
+                    gamersList.add(gamers);
                 }
+                cursor.close();
             } catch (MongoException e) {
                 e.printStackTrace();
             }
