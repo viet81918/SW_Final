@@ -1,4 +1,4 @@
-package MOdel;
+package Model;
 
 public class Gamers {
 

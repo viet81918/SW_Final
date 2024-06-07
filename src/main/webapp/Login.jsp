@@ -21,13 +21,13 @@
                 <h3>Sign In</h3>
                 <span>or use your account</span>
 
-                <form action="#" id="form_input">
+                <form action="LoginServlet" id="form_input" method="POST">
                     <div class="type">
-                        <input type="email" placeholder="Email" name="" id="email">
+                        <input type="email" placeholder="Email" name="email" id="email">
 
                     </div>
                     <div class="type">
-                        <input type="password" placeholder="Password" name="" id="password">
+                        <input type="password" placeholder="Password" name="pass" id="password">
 
                     </div>
                     
@@ -45,7 +45,7 @@
                 <h3>Sign Up</h3>
                 <span>or use your email for register</span>
 
-                <form action="#" id="form_input">
+                <form action="RegisterServlet" id="form_input">
                     <div class="type">
 
                         <input type="text" name="" placeholder="Name" id="name">
