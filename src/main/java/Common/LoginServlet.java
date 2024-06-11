@@ -4,7 +4,7 @@
  */
 
 package Common;
-import static Common.LoginCheck.check;
+import static Common.CheckValid.userValid;
 import Controller.JavaMongo;
 import Model.Users;
 import java.io.IOException;
@@ -83,11 +83,11 @@ public class LoginServlet extends HttpServlet {
                 String p = request.getParameter("pass");
                 String r = request.getParameter("remember");
             
-                Users u= check(e, p);
+                
 
                 try {
-                    
-                    if( u == null ){
+                    Users u = userValid(e, p);
+                    if(u == null){
                         request.setAttribute("error", "An Account not Exist!!!");
                         request.setAttribute("red", true);
                         request.getRequestDispatcher("Login.jsp").forward(request, response);

@@ -12,9 +12,15 @@
         <title>JSP Page</title>
         <link rel="stylesheet" type="text/css" href="assets/css/login_design.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+        <style>
+        .error mess{
+            color: red;
+            font-weight: bold;
+        }
+    </style>
     </head>
     <body>
+        
     <div class="container">
         <div class="box">
             <div class="form sign_in">
@@ -22,6 +28,15 @@
                 <span>or use your account</span>
 
                 <form action="LoginServlet" id="form_input" method="POST">
+                    <%
+        String error = (String) request.getAttribute("error");
+        Boolean red = (Boolean) request.getAttribute("red");
+        if (red != null && red) {
+    %>
+        <p class="error"><%= error %></p>
+    <%
+        }
+    %>
                     <div class="type">
                         <input type="email" placeholder="Email" name="email" id="email">
 
@@ -39,28 +54,42 @@
                     <button class="btn bkg">Sign In</button>
                          
                 </form>
+                        <form id="form_gg">
+                        <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:9999/FPTeam/loginGG&response_type=code
+		&client_id=861336407219-9pau27upj8qhchdlsr9ljsr630ojfb2h.apps.googleusercontent.com&approval_prompt=force">Login With Google</a>
+                    </form>
             </div>
     
             <div class="form sign_up">
                 <h3>Sign Up</h3>
                 <span>or use your email for register</span>
 
-                <form action="RegisterServlet" id="form_input">
+                <form action="SignUpServlet" id="form_input" method="POST">
+                    <%
+        String mess = (String) request.getAttribute("mess");
+        Boolean blue = (Boolean) request.getAttribute("blue");
+        if (blue != null && blue) {
+    %>
+        <p class="mess"><%= mess %></p>
+    <%
+        }
+    %>
                     <div class="type">
 
-                        <input type="text" name="" placeholder="Name" id="name">
+                        <input type="text" name="name" placeholder="Name" id="name">
                     </div>
                     <div class="type">
                         
-                        <input type="email" name="" placeholder="Email" id="email">
+                        <input type="email" name="email" placeholder="Email" id="email">
                     </div>
                     <div class="type">
 
-                        <input type="password" name="" placeholder="Password" id="password">
+                        <input type="password" name="password" placeholder="Password" id="password">
                     </div>
 
                     <button class="btn bkg">Sign Up</button>
                 </form>
+                    
             </div>
         </div>
 
@@ -82,7 +111,7 @@
         </div>
     </div>
     
-
+    
     <!-- link script -->
     <script>
         const container = document.querySelector('.container');
@@ -98,6 +127,9 @@
         });
     </script>
     
+    
+    
+
     
 </body>
     

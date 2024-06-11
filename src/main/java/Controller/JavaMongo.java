@@ -68,8 +68,10 @@ public class JavaMongo {
                             doc.getString("Name"),
                             doc.getString("Email"),
                             doc.getString("Password"),
+                            doc.getInteger("Role"),
                             doc.getInteger("Money", 0),
                             doc.getString("AvatarLink")  // Get AvatarLink from the document
+                            
                     );
                     gamersList.add(gamers);
                 }
@@ -157,6 +159,31 @@ public class JavaMongo {
     // Trả về null nếu không tìm thấy người dùng với ID đã cung cấp
     return null;
     }
+    
+    public static void CreateNewAccount(String name, String password, String email, int role){
+        MongoClientSettings settings = getConnection();
+        try(MongoClient mongoClient = MongoClients.create(settings)){
+            
+        MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
 
-
+                // Access the "Gamers" collection
+        MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
+        
+        MongoCollection<Document> gamersCollection = fpteamDB.getCollection("Gamers");
+        
+        Document user = new Document("Name", name)
+                        .append("Password", password)
+                        .append("Email", email)
+                        .append("Role", role);
+        usersCollection.insertOne(user);
+        
+        Document gamer = new Document("Name", name)
+                        .append("Password", password)
+                        .append("Email", email)
+                        .append("Role", role);
+        gamersCollection.insertOne(gamer);
+        }catch (MongoException e) {
+        e.printStackTrace();
+         }
+    }
 }
