@@ -1,14 +1,26 @@
 package Model;
 
-public class Gamers {
+public class Gamers extends Users{
+    
+    private int Money;
+    private String AvatarLink;
+    
+    
+    
+    public Gamers(String id, String name, String gmail, String password, int role, int Money, String AvatarLink ){
+        super(id,name,gmail,password,role);
+        this.Money = Money;
+        this.AvatarLink = AvatarLink;             
+    }
+    
 
-    private String ID;
+    /*private String ID;
     private String Name;
     private String Email;
     private String Password;
     private int Money;
     private String AvatarLink;
-
+    
     // Default constructor
     public Gamers() {
     }
@@ -81,5 +93,28 @@ public class Gamers {
                 ", Money=" + Money +
                 ", AvatarLink='" + AvatarLink + '\'' +
                 '}';
+    }*/
+
+    public int getMoney() {
+        return Money;
     }
+
+    public void setMoney(int Money) {
+        this.Money = Money;
+    }
+
+    public String getAvatarLink() {
+        return AvatarLink;
+    }
+
+    public void setAvatarLink(String AvatarLink) {
+        this.AvatarLink = AvatarLink;
+    }
+
+    @Override
+    public String toString() {
+        return "Gamers{"+ super.toString() + "Money=" + Money + ", AvatarLink=" + AvatarLink + '}';
+    }
+    
+    
 }
