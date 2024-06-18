@@ -3,6 +3,7 @@ package Controller;
 import Model.Game;
 import Model.Gamers;
 import Model.Genre;
+import Model.Review;
 import Model.Users;
 import com.mongodb.BasicDBObject;
 import com.mongodb.ConnectionString;
@@ -10,6 +11,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
 import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -18,14 +20,17 @@ import com.mongodb.client.MongoDatabase;
 import java.text.SimpleDateFormat;
 import org.bson.Document;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class JavaMongo {
 
     private static final String CONNECTION_STRING = "mongodb+srv://viet81918:conchode239@cluster0.hzr2fsy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-public static MongoClientSettings getConnection(){
-           ServerApi serverApi = ServerApi.builder()
+
+    public static MongoClientSettings getConnection() {
+        ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();
 
@@ -34,33 +39,36 @@ public static MongoClientSettings getConnection(){
                 .serverApi(serverApi)
                 .build();
         return settings;
-     }
-     
-     public static void main(String[] args) {
+    }
+
+    public static void main(String[] args) {
         ArrayList<Gamers> gamersList = getAllGamers();
         System.out.println("List of Gamers:");
         for (Gamers gamer : gamersList) {
             System.out.println(gamer);
         }
         ArrayList<Users> usersList = getAllUser();
-         System.out.println("List all users: ");
-        for (Users u : usersList)
-        System.out.println(u);
-            ArrayList<Game> gamesList = getAllGames();
-         System.out.println("List all Games: ");
-        for (Game g : gamesList)
-        System.out.println(g);
-            ArrayList<Genre> genresList = getAllGenres();
-         System.out.println("List all Genres: ");
-        for (Genre g1 : genresList)
-        System.out.println(g1);
+        System.out.println("List all users: ");
+        for (Users u : usersList) {
+            System.out.println(u);
+        }
+        ArrayList<Game> gamesList = getAllGames();
+        System.out.println("List all Games: ");
+        for (Game g : gamesList) {
+            System.out.println(g);
+        }
+        ArrayList<Genre> genresList = getAllGenres();
+        System.out.println("List all Genres: ");
+        for (Genre g1 : genresList) {
+            System.out.println(g1);
+        }
     }
-    
-      public static void addGame(Game game) {
+
+    public static void addGame(Game game) {
         try (MongoClient mongoClient = MongoClients.create(getConnection())) {
             MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
             MongoCollection<Document> gamesCollection = fpteamDB.getCollection("Games");
-         
+
             Document gameDoc = new Document()
                     .append("ID", game.getId())
                     .append("Name", game.getName())
@@ -84,7 +92,8 @@ public static MongoClientSettings getConnection(){
             e.printStackTrace();
         }
     }
-       public static void addGenreToGame(String gameId, String genreType) {
+
+    public static void addGenreToGame(String gameId, String genreType) {
         try (MongoClient mongoClient = MongoClients.create(getConnection())) {
             MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
             MongoCollection<Document> gameGenresCollection = fpteamDB.getCollection("Game_Has_Genre");
@@ -99,7 +108,7 @@ public static MongoClientSettings getConnection(){
             e.printStackTrace();
         }
     }
-     
+
     public static ArrayList<Game> getAllGames() {
         MongoClientSettings settings = getConnection();
         ArrayList<Game> gamesList = new ArrayList<>();
@@ -119,8 +128,6 @@ public static MongoClientSettings getConnection(){
                 Integer numberOfBuyers = doc.getInteger("Number_of_buyers");
 
                 // Parse nested fields for configuration
-              
-
                 Game game = new Game(
                         doc.getString("ID"),
                         doc.getString("Name"),
@@ -147,19 +154,20 @@ public static MongoClientSettings getConnection(){
 
         return gamesList;
     }
- public static ArrayList<Genre> getAllGenres() {
+
+    public static ArrayList<Genre> getAllGenres() {
         ArrayList<Genre> genresList = new ArrayList<>();
-        
+
         try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
-                MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
             MongoCollection<Document> Collection = fpteamDB.getCollection("Genres");
 
             MongoCursor<Document> cursor = Collection.find().iterator();
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
                 Genre genre = new Genre(
-                    doc.getString("Type_of_Genre"),
-                    doc.getString("Description")
+                        doc.getString("Type_of_Genre"),
+                        doc.getString("Description")
                 );
                 genresList.add(genre);
             }
@@ -170,15 +178,64 @@ public static MongoClientSettings getConnection(){
 
         return genresList;
     }
-   
+
+    public static ArrayList<Review> getReviewByGame(Game game) {
+        ArrayList<Review> reviews = new ArrayList<>();
+
+        try (MongoClient mongoClient = MongoClients.create(getConnection())) {
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+            MongoCollection<Document> collection = fpteamDB.getCollection("Reviews");
+
+            MongoCursor<Document> cursor = collection.find(new Document("ID_Game", game.getId())).iterator();
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                Review review = new Review(
+                        doc.getString("ID_Gamer"),
+                        doc.getString("ID_Game"),
+                        doc.getDouble("Rating"),
+                        doc.getString("Description")
+                );
+                reviews.add(review);
+            }
+            cursor.close();
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+
+        return reviews;
+    }
+
+    public static double getAverageRatingByGame(Game game) {
+        double averageRating = 0.0;
+
+        try (MongoClient mongoClient = MongoClients.create(getConnection())) {
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+            MongoCollection<Document> collection = fpteamDB.getCollection("Reviews");
+
+            List<Document> pipeline = Arrays.asList(
+                    new Document("$match", new Document("ID_Game", game.getId())),
+                    new Document("$group", new Document("_id", "$ID_Game")
+                            .append("averageRating", new Document("$avg", "$Rating")))
+            );
+
+            AggregateIterable<Document> result = collection.aggregate(pipeline);
+            if (result.first() != null) {
+                averageRating = result.first().getDouble("averageRating");
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+
+        return averageRating;
+    }
+
     public static ArrayList<Gamers> getAllGamers() {
-        
 
         MongoClientSettings settings = getConnection();
 
         ArrayList<Gamers> gamersList = new ArrayList<>();
 
-          try (MongoClient mongoClient = MongoClients.create(settings)) {
+        try (MongoClient mongoClient = MongoClients.create(settings)) {
             try {
                 // Access the "FPTeam" database
                 MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
@@ -197,8 +254,8 @@ public static MongoClientSettings getConnection(){
                             doc.getString("Password"),
                             doc.getInteger("Role"),
                             doc.getInteger("Money", 0),
-                            doc.getString("AvatarLink")  // Get AvatarLink from the document
-                            
+                            doc.getString("AvatarLink") // Get AvatarLink from the document
+
                     );
                     gamersList.add(gamers);
                 }
@@ -210,15 +267,14 @@ public static MongoClientSettings getConnection(){
 
         return gamersList;
     }
-    
-   
+
     public static ArrayList<Users> getAllUser() {
-       
+
         MongoClientSettings settings = getConnection();
 
         ArrayList<Users> usersList = new ArrayList<>();
 
-          try (MongoClient mongoClient = MongoClients.create(settings)) {
+        try (MongoClient mongoClient = MongoClients.create(settings)) {
             try {
                 // Access the "FPTeam" database
                 MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
@@ -236,7 +292,6 @@ public static MongoClientSettings getConnection(){
                             doc.getString("Email"),
                             doc.getString("Password"),
                             doc.getInteger("Role")
-                            
                     );
                     usersList.add(users);
                 }
@@ -250,67 +305,67 @@ public static MongoClientSettings getConnection(){
     }
 
     public static Users getUserById(String id) {
-    MongoClientSettings settings = getConnection();
-
-    try (MongoClient mongoClient = MongoClients.create(settings)) {
-        // Truy cập cơ sở dữ liệu "FPTeam"
-        MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
-
-        // Truy cập bộ sưu tập "Users"
-        MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
-
-        // Tạo một bộ lọc để truy vấn người dùng dựa trên ID
-        BasicDBObject query = new BasicDBObject();
-        query.put("ID", id);
-
-        // Thực hiện truy vấn và lấy ra kết quả
-        Document userDoc = usersCollection.find(query).first();
-
-        if (userDoc != null) {
-            // Tạo một đối tượng Users từ thông tin trong document
-            Users user = new Users(
-                userDoc.getString("ID"),
-                userDoc.getString("Name"),
-                userDoc.getString("Email"),
-                userDoc.getString("Password"),
-                userDoc.getInteger("Role")
-            );
-
-            // Trả về đối tượng Users đã tạo
-            return user;
-        }
-    } catch (MongoException e) {
-        e.printStackTrace();
-    }
-
-    // Trả về null nếu không tìm thấy người dùng với ID đã cung cấp
-    return null;
-    }
-    
-    public static void CreateNewAccount(String name, String password, String email, int role){
         MongoClientSettings settings = getConnection();
-        try(MongoClient mongoClient = MongoClients.create(settings)){
-            
-        MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
 
-                // Access the "Gamers" collection
-        MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
-        
-        MongoCollection<Document> gamersCollection = fpteamDB.getCollection("Gamers");
-        
-        Document user = new Document("Name", name)
-                        .append("Password", password)
-                        .append("Email", email)
-                        .append("Role", role);
-        usersCollection.insertOne(user);
-        
-        Document gamer = new Document("Name", name)
-                        .append("Password", password)
-                        .append("Email", email)
-                        .append("Role", role);
-        gamersCollection.insertOne(gamer);
-        }catch (MongoException e) {
-        e.printStackTrace();
-         }
+        try (MongoClient mongoClient = MongoClients.create(settings)) {
+            // Truy cập cơ sở dữ liệu "FPTeam"
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+
+            // Truy cập bộ sưu tập "Users"
+            MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
+
+            // Tạo một bộ lọc để truy vấn người dùng dựa trên ID
+            BasicDBObject query = new BasicDBObject();
+            query.put("ID", id);
+
+            // Thực hiện truy vấn và lấy ra kết quả
+            Document userDoc = usersCollection.find(query).first();
+
+            if (userDoc != null) {
+                // Tạo một đối tượng Users từ thông tin trong document
+                Users user = new Users(
+                        userDoc.getString("ID"),
+                        userDoc.getString("Name"),
+                        userDoc.getString("Email"),
+                        userDoc.getString("Password"),
+                        userDoc.getInteger("Role")
+                );
+
+                // Trả về đối tượng Users đã tạo
+                return user;
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+
+        // Trả về null nếu không tìm thấy người dùng với ID đã cung cấp
+        return null;
+    }
+
+    public static void CreateNewAccount(String name, String password, String email, int role) {
+        MongoClientSettings settings = getConnection();
+        try (MongoClient mongoClient = MongoClients.create(settings)) {
+
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+
+            // Access the "Gamers" collection
+            MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
+
+            MongoCollection<Document> gamersCollection = fpteamDB.getCollection("Gamers");
+
+            Document user = new Document("Name", name)
+                    .append("Password", password)
+                    .append("Email", email)
+                    .append("Role", role);
+            usersCollection.insertOne(user);
+
+            Document gamer = new Document("Name", name)
+                    .append("Password", password)
+                    .append("Email", email)
+                    .append("Role", role);
+            gamersCollection.insertOne(gamer);
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
     }
 }
