@@ -5,6 +5,7 @@
 package Common;
 
 import Controller.JavaMongo;
+import Model.Gamers;
 import Model.Users;
 import java.util.ArrayList;
 
@@ -36,5 +37,17 @@ public class CheckValid extends JavaMongo {
             }
             return null;
     }
+    
+    public static Gamers CheckEmailGamers(String email){
+        ArrayList<Gamers> gamers = getAllGamers();
+
+            for (Gamers g : gamers) {
+                if (g.getGmail().equals(email)) {
+                    return g;
+                }
+            }
+            return null;
+    }
+   
 
 }

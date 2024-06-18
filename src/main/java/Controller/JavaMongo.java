@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Game;
 import Model.Gamers;
+import Model.Publishers;
 import Model.Genre;
 import Model.Users;
 import com.mongodb.BasicDBObject;
@@ -44,6 +45,12 @@ public static MongoClientSettings getConnection(){
         }
         ArrayList<Users> usersList = getAllUser();
          System.out.println("List all users: ");
+
+        for (Users u : usersList){
+        System.out.println(u);}
+       
+        
+
         for (Users u : usersList)
         System.out.println(u);
             ArrayList<Game> gamesList = getAllGames();
@@ -54,6 +61,7 @@ public static MongoClientSettings getConnection(){
          System.out.println("List all Genres: ");
         for (Genre g1 : genresList)
         System.out.println(g1);
+
     }
     
       public static void addGame(Game game) {
@@ -210,7 +218,51 @@ public static MongoClientSettings getConnection(){
 
         return gamersList;
     }
-    
+    /*publisher*/
+    public static ArrayList<Publishers> getAllPublishers() {
+        
+
+        MongoClientSettings settings = getConnection();
+
+        ArrayList<Publishers> publishersList = new ArrayList<>();
+
+          try (MongoClient mongoClient = MongoClients.create(settings)) {
+            try {
+                // Access the "FPTeam" database
+                MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+
+                // Access the "Gamers" collection
+                MongoCollection<Document> gamePublishersCollection = fpteamDB.getCollection("GamePublishers");
+                MongoCursor<Document> cursor = gamePublishersCollection.find().iterator();
+
+                // Query the collection and iterate over the cursor to print each document
+                while (cursor.hasNext()) {
+                    Document doc = cursor.next();
+                    Publishers publishers = new Publishers(
+                            doc.getString("ID"),
+                            doc.getString("Name"),                            
+                            doc.getString("Password"),
+                            doc.getString("Email"),                            
+                            doc.getString("Bank_account"),
+                            doc.getInteger("Profit",0),                                                  
+                            doc.getString("Description"),
+                            doc.getString("AvatarLink"),
+                            doc.getString("Money"),
+                            doc.getInteger("Role",0), 
+                            doc.getString("RegistrationDate")
+                       
+                    );
+                    publishersList.add(publishers);
+                }
+                cursor.close();
+            } catch (MongoException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return publishersList;
+    }
+    /*----------------------------*/
    
     public static ArrayList<Users> getAllUser() {
        
@@ -287,15 +339,15 @@ public static MongoClientSettings getConnection(){
     return null;
     }
     
-    public static void CreateNewAccount(String name, String password, String email, int role){
+    public static void CreateNewGamerAccount(String name, String password, String email, int role, int Money, String AvatarLink){
         MongoClientSettings settings = getConnection();
         try(MongoClient mongoClient = MongoClients.create(settings)){
             
         MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
 
-                // Access the "Gamers" collection
+                // Access the "Users" collection
         MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
-        
+        // Access the "Gamers" collection
         MongoCollection<Document> gamersCollection = fpteamDB.getCollection("Gamers");
         
         Document user = new Document("Name", name)
@@ -307,10 +359,130 @@ public static MongoClientSettings getConnection(){
         Document gamer = new Document("Name", name)
                         .append("Password", password)
                         .append("Email", email)
+                        .append("Money", Money)
+                        .append("AvatarLink", AvatarLink)
                         .append("Role", role);
         gamersCollection.insertOne(gamer);
         }catch (MongoException e) {
         e.printStackTrace();
          }
     }
+    
+    /*tao moi publisher*/
+    public static void CreateNewPublisgherAccount(String name, String password, String email, int role, int Money, String AvatarLink){
+        MongoClientSettings settings = getConnection();
+        try(MongoClient mongoClient = MongoClients.create(settings)){
+            
+        MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+
+                // Access the "Users" collection
+        MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
+        // Access the "Gamers" collection
+        MongoCollection<Document> gamePublishersCollection = fpteamDB.getCollection("GamePublishers");
+        
+        Document user = new Document("Name", name)
+                        .append("Password", password)
+                        .append("Email", email)
+                        .append("Role", role);
+        usersCollection.insertOne(user);
+        
+        Document gamer = new Document("Name", name)
+                        .append("Password", password)
+                        .append("Email", email)
+                        .append("Money", Money)
+                        .append("AvatarLink", AvatarLink)
+                        .append("Role", role);
+        gamePublishersCollection.insertOne(gamer);
+        }catch (MongoException e) {
+        e.printStackTrace();
+         }
+    }
+    /*---------------------*/
+    
+    public Users getUserByEmail(String email) {
+        MongoClientSettings settings = getConnection();
+
+        try (MongoClient mongoClient = MongoClients.create(settings)) {
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+            MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
+
+            BasicDBObject query = new BasicDBObject();
+            query.put("Email", email);
+
+            Document userDoc = usersCollection.find(query).first();
+
+            if (userDoc != null) {
+                return new Users(
+                        userDoc.getString("ID"),
+                        userDoc.getString("Name"),
+                        userDoc.getString("Email"),
+                        userDoc.getString("Password"),
+                        userDoc.getInteger("Role")
+                );
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
+    public static Gamers getGamerByEmail(String email){
+        MongoClientSettings settings = getConnection();
+
+        try (MongoClient mongoClient = MongoClients.create(settings)) {
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+            MongoCollection<Document> gamersCollection = fpteamDB.getCollection("Gamers");
+
+            BasicDBObject query = new BasicDBObject();
+            query.put("Email", email);
+
+            Document gamerDoc = gamersCollection.find(query).first();
+
+            if (gamerDoc != null) {
+                return new Gamers(
+                        gamerDoc.getString("ID"),
+                        gamerDoc.getString("Name"),
+                        gamerDoc.getString("Email"),
+                        gamerDoc.getString("Password"),                      
+                        gamerDoc.getInteger("Role"),
+                        gamerDoc.getInteger("Money"),
+                        gamerDoc.getString("AvatarLink")
+                );
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
+    public static void updatePassword(String email, String newPassword) {
+        try (com.mongodb.client.MongoClient mongoClient = MongoClients.create(getConnection())) {
+            // Truy cập cơ sở dữ liệu "FPTeam"
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+
+            // Tạo một bộ lọc để truy vấn người dùng dựa trên Email
+            Document filter = new Document("Email", email);
+
+            // Tạo một document mới chứa thông tin mật khẩu mới
+            Document updatePasswordDoc = new Document("$set", new Document("Password", newPassword));
+
+            // Truy cập bộ sưu tập "Users"
+            MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
+
+            // Thực hiện update vào MongoDB trong collection "Users"
+            usersCollection.updateOne(filter, updatePasswordDoc);
+
+            // Truy cập bộ sưu tập "Gamers"
+            MongoCollection<Document> gamersCollection = fpteamDB.getCollection("Gamers");
+
+            // Thực hiện update vào MongoDB trong collection "Gamers"
+            gamersCollection.updateOne(filter, updatePasswordDoc);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -17,6 +17,21 @@
             color: red;
             font-weight: bold;
         }
+        .role-selection {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .role-selection label {
+            margin-right: 10px;
+        }
+        .roleText{
+            font-weight: bold;            
+        }
+        #gamer {
+             margin-right: 20px;
+        }
     </style>
     </head>
     <body>
@@ -28,6 +43,13 @@
                 <span>or use your account</span>
 
                 <form action="LoginServlet" id="form_input" method="POST">
+                     <%
+		  			if(request.getAttribute("status")!=null)
+		  			{
+		  				out.print("<p class='text-danger ml-1'>"+request.getAttribute("status")+"</p>");
+		  			}
+		  
+		  %>
                     <%
         String error = (String) request.getAttribute("error");
         Boolean red = (Boolean) request.getAttribute("red");
@@ -86,7 +108,15 @@
 
                         <input type="password" name="password" placeholder="Password" id="password">
                     </div>
-
+                    
+                    <div class="role-selection">
+                        <p class="roleText"><label for="role">Choose your role:</label></p>
+                        <label for="gamer">Gamer</label>
+                        <input type="radio" id="gamer" name="role" value="gamer">
+                        <label for="publisher">Publisher</label>
+                        <input type="radio" id="publisher" name="role" value="publisher">
+                    </div>
+                    
                     <button class="btn bkg">Sign Up</button>
                 </form>
                     
