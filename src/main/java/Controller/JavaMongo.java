@@ -276,7 +276,7 @@ public class JavaMongo {
                 while (cursor.hasNext()) {
                     Document doc = cursor.next();
                     Publishers publishers = new Publishers(
-                            doc.getString("ID"),
+                          doc.getString("ID"),
                             doc.getString("Name"),                            
                             doc.getString("Password"),
                             doc.getString("Email"),                            
@@ -284,7 +284,7 @@ public class JavaMongo {
                             doc.getInteger("Profit",0),                                                  
                             doc.getString("Description"),
                             doc.getString("AvatarLink"),
-                            doc.getString("Money"),
+                            doc.getInteger("Money"),
                             doc.getInteger("Role",0), 
                             doc.getString("RegistrationDate")
                        
@@ -402,28 +402,8 @@ public class JavaMongo {
             e.printStackTrace();
         }
 
-                // Access the "Users" collection
-        MongoCollection<Document> usersCollection = fpteamDB.getCollection("Users");
-        // Access the "Gamers" collection
-        MongoCollection<Document> gamersCollection = fpteamDB.getCollection("Gamers");
-        
-        Document user = new Document("Name", name)
-                        .append("Password", password)
-                        .append("Email", email)
-                        .append("Role", role);
-        usersCollection.insertOne(user);
-        
-        Document gamer = new Document("Name", name)
-                        .append("Password", password)
-                        .append("Email", email)
-                        .append("Money", Money)
-                        .append("AvatarLink", AvatarLink)
-                        .append("Role", role);
-        gamersCollection.insertOne(gamer);
-        }catch (MongoException e) {
-        e.printStackTrace();
-         }
     }
+    
     
     /*tao moi publisher*/
     public static void CreateNewPublisgherAccount(String name, String password, String email, int role, int Money, String AvatarLink){
@@ -541,5 +521,6 @@ public class JavaMongo {
             e.printStackTrace();
         }
     }
-
 }
+
+
