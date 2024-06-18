@@ -77,7 +77,7 @@ https://templatemo.com/tm-579-cyborg-gaming
                     <!-- ***** Search End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="Home.java" class="active">Home</a></li>
+                        <li><a href="Home.jsp" class="active">Home</a></li>
                         <li><a href="browse.html">Browse</a></li>
                         <li><a href="details.html">Genre</a>
                             
