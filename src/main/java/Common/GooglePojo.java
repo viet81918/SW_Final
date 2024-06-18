@@ -20,6 +20,8 @@ public class GooglePojo {
 	private String link;
 	private String picture;
         private String password; // bonus
+        private int Money;
+        private String AvatarLink;
         
 	public String getId() {
 		return this.id;
@@ -87,13 +89,33 @@ public class GooglePojo {
         
         public String getPassword() {
         return password;
-    }
+        }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public int getMoney() {
+            return Money;
+        }
+
+        public void setMoney(int Money) {
+            this.Money = Money;
+        }
+
+        public String getAvatarLink() {
+            return AvatarLink;
+        }
+
+        public void setAvatarLink(String AvatarLink) {
+            this.AvatarLink = AvatarLink;
+        }
+        
+        
     
         public GooglePojo() {
+        this.Money = 0;
+        this.AvatarLink = "https://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg";
         // Generate a random password when creating a new GooglePojo object
         this.generateRandomPassword();
         }

@@ -79,11 +79,18 @@ https://templatemo.com/tm-579-cyborg-gaming
                     <ul class="nav">
                         <li><a href="Home.jsp" class="active">Home</a></li>
                         <li><a href="browse.html">Browse</a></li>
+
                         <li><a href="details.html">Genre</a>
                             
                         </li>
+
+            
+                    
+                   
+
                         <li><a href="UploadGame">Upload Game</a></li>
                         <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
+
                     </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>

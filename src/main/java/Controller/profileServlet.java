@@ -3,12 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Common;
+package Controller;
 
-import static Common.CheckValid.CheckEmail;
-import static Common.CheckValid.CheckEmailGamers;
-import static Common.CheckValid.userValid;
-import static Controller.JavaMongo.CreateNewGamerAccount;
 import Model.Gamers;
 import Model.Users;
 import java.io.IOException;
@@ -19,13 +15,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name="/loginGG", urlPatterns={"/loginGG"})
-public class LoginGoogleServlet extends HttpServlet {
+@WebServlet(name="profileServlet", urlPatterns={"/profileServlet"})
+public class profileServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,28 +34,18 @@ public class LoginGoogleServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String code = request.getParameter("code");
-        GoogleLogin gg = new GoogleLogin();
-        String accessToken = gg.getToken(code);
-        GooglePojo acc = gg.getUserInfo(accessToken);
-        //System.out.print(acc);
-        int role =3;
-        Users a = CheckEmail(acc.getEmail());
-        
-        HttpSession session = request.getSession();
-        
-        if (a != null){
-            session.setAttribute("account", a);
-        }else {
-            // If user does not exist, create a new account
-            CreateNewGamerAccount(acc.getName(), acc.getPassword(), acc.getEmail(),role,acc.getMoney(),acc.getAvatarLink()); // Set yourRoleValue accordingly
-            // Retrieve the newly created user to set in session
-            a = CheckEmail(acc.getEmail()); // Check again after account creation
-            session.setAttribute("account", a);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet profileServlet</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet profileServlet at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        
-        // Redirect to the homepage or dashboard after login
-        response.sendRedirect("Home.jsp");
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,7 +59,47 @@ public class LoginGoogleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        
+        try{
+            HttpSession session = request.getSession();
+            Users user = (Users) session.getAttribute("account");
+            if(user != null){
+                int role = user.getRole();
+                if(role == 3){
+                    Gamers gamer = JavaMongo.getGamerByEmail(user.getGmail());
+                    if(gamer != null){
+                        request.setAttribute("gamer", gamer);
+                        request.getRequestDispatcher("profile.jsp").forward(request, response);
+                    }else {
+                                response.sendRedirect("Login.jsp");
+                            }
+
+                }else if(role ==2){
+                
+                }
+    //            ArrayList<Gamers> gamersList = JavaMongo.getAllGamers();
+
+
+            }
+            else
+            {
+                response.sendRedirect("Login.jsp");
+            }
+        }catch (Exception ex) {
+                      try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LoginServlet</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Error at " + ex.getMessage() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+                }
+        
     } 
 
     /** 

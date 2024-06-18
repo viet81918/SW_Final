@@ -93,8 +93,9 @@ public class LoginServlet extends HttpServlet {
                         request.getRequestDispatcher("Login.jsp").forward(request, response);
                     }
                     else {
+                        
                         HttpSession session = request.getSession();
-                            session.setAttribute("account",JavaMongo.getUserById(u.getId()));
+                        session.setAttribute("account",JavaMongo.getGamerByEmail(e));
 ////                        session.setAttribute("account", JavaMongo.getAllUser());
 //                        
                         /*
