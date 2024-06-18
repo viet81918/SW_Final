@@ -1,7 +1,9 @@
 package Controller;
 
+import Model.Game;
 import Model.Gamers;
 import Model.Publishers;
+import Model.Genre;
 import Model.Users;
 import com.mongodb.BasicDBObject;
 import com.mongodb.ConnectionString;
@@ -14,29 +16,16 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import java.text.SimpleDateFormat;
 import org.bson.Document;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 
 public class JavaMongo {
 
     private static final String CONNECTION_STRING = "mongodb+srv://viet81918:conchode239@cluster0.hzr2fsy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
-     
-     public static void main(String[] args) {
-        ArrayList<Gamers> gamersList = getAllGamers();
-        System.out.println("List of Gamers:");
-        for (Gamers gamer : gamersList) {
-            System.out.println(gamer);
-        }
-        ArrayList<Users> usersList = getAllUser();
-         System.out.println("List all users: ");
-        for (Users u : usersList){
-        System.out.println(u);}
-       
-        
-    }
-    
-     public static MongoClientSettings getConnection(){
+public static MongoClientSettings getConnection(){
            ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();
@@ -47,6 +36,149 @@ public class JavaMongo {
                 .build();
         return settings;
      }
+     
+     public static void main(String[] args) {
+        ArrayList<Gamers> gamersList = getAllGamers();
+        System.out.println("List of Gamers:");
+        for (Gamers gamer : gamersList) {
+            System.out.println(gamer);
+        }
+        ArrayList<Users> usersList = getAllUser();
+         System.out.println("List all users: ");
+
+        for (Users u : usersList){
+        System.out.println(u);}
+       
+        
+
+        for (Users u : usersList)
+        System.out.println(u);
+            ArrayList<Game> gamesList = getAllGames();
+         System.out.println("List all Games: ");
+        for (Game g : gamesList)
+        System.out.println(g);
+            ArrayList<Genre> genresList = getAllGenres();
+         System.out.println("List all Genres: ");
+        for (Genre g1 : genresList)
+        System.out.println(g1);
+
+    }
+    
+      public static void addGame(Game game) {
+        try (MongoClient mongoClient = MongoClients.create(getConnection())) {
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+            MongoCollection<Document> gamesCollection = fpteamDB.getCollection("Games");
+         
+            Document gameDoc = new Document()
+                    .append("ID", game.getId())
+                    .append("Name", game.getName())
+                    .append("Price", game.getPrice())
+                    .append("Publish_day", game.getPublishDay())
+                    .append("Number_of_buyers", game.getNumberOfBuyers())
+                    .append("LinkTrailer", game.getLinkTrailer())
+                    .append("AvatarLink", game.getAvatarLink())
+                    .append("GameLink", game.getGameLink())
+                    .append("Description", game.getDescription())
+                    .append("Minimum_CPU", game.getMinimumCPU())
+                    .append("Minimum_RAM", game.getMinimumRAM())
+                    .append("Minimum_GPU", game.getMinimumGPU())
+                    .append("Maximum_CPU", game.getMaximumCPU())
+                    .append("Maximum_RAM", game.getMaximumRAM())
+                    .append("Maximum_GPU", game.getMaximumGPU());
+
+            gamesCollection.insertOne(gameDoc);
+            System.out.println("Game added successfully to MongoDB.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+       public static void addGenreToGame(String gameId, String genreType) {
+        try (MongoClient mongoClient = MongoClients.create(getConnection())) {
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+            MongoCollection<Document> gameGenresCollection = fpteamDB.getCollection("Game_Has_Genre");
+
+            Document gameGenreDoc = new Document()
+                    .append("ID_Game", gameId)
+                    .append("Type_of_genres", genreType);
+
+            gameGenresCollection.insertOne(gameGenreDoc);
+            System.out.println("Genre '" + genreType + "' added to game ID: " + gameId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     
+    public static ArrayList<Game> getAllGames() {
+        MongoClientSettings settings = getConnection();
+        ArrayList<Game> gamesList = new ArrayList<>();
+
+        try (MongoClient mongoClient = MongoClients.create(settings)) {
+            MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+            MongoCollection<Document> gamesCollection = fpteamDB.getCollection("Games");
+            MongoCursor<Document> cursor = gamesCollection.find().iterator();
+
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+
+                // Parse price
+                Double price = doc.getDouble("Price");
+
+                // Parse number of buyers
+                Integer numberOfBuyers = doc.getInteger("Number_of_buyers");
+
+                // Parse nested fields for configuration
+              
+
+                Game game = new Game(
+                        doc.getString("ID"),
+                        doc.getString("Name"),
+                        price,
+                        doc.getString("Publish_day"),
+                        numberOfBuyers,
+                        doc.getString("LinkTrailer"),
+                        doc.getString("AvatarLink"),
+                        doc.getString("GameLink"),
+                        doc.getString("Description"),
+                        doc.getString("Minimum_CPU"),
+                        doc.getString("Minimum_RAM"),
+                        doc.getString("Minimum_GPU"),
+                        doc.getString("Maximum_CPU"),
+                        doc.getString("Maximum_RAM"),
+                        doc.getString("Maximum_GPU")
+                );
+                gamesList.add(game);
+            }
+            cursor.close();
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+
+        return gamesList;
+    }
+ public static ArrayList<Genre> getAllGenres() {
+        ArrayList<Genre> genresList = new ArrayList<>();
+        
+        try (MongoClient mongoClient = MongoClients.create(CONNECTION_STRING)) {
+                MongoDatabase fpteamDB = mongoClient.getDatabase("FPTeam");
+            MongoCollection<Document> Collection = fpteamDB.getCollection("Genres");
+
+            MongoCursor<Document> cursor = Collection.find().iterator();
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                Genre genre = new Genre(
+                    doc.getString("Type_of_Genre"),
+                    doc.getString("Description")
+                );
+                genresList.add(genre);
+            }
+            cursor.close();
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+
+        return genresList;
+    }
+   
     public static ArrayList<Gamers> getAllGamers() {
         
 
